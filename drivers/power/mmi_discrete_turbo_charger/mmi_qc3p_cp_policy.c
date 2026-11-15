@@ -1210,7 +1210,7 @@ skip_pd_select:
 				msecs_to_jiffies(heartbeat_dely_ms));
 	} else {
 		mmi_qc3p_chrg_policy_clear(chip);
-		chip->sm_work_running = false;
+		chip->qc3p_sm_work_running = false;
 		chip->qc3p_active = false;
 		mmi_chrg_err(chip, "exit sm work\n");
 	}
