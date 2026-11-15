@@ -150,6 +150,7 @@ static int mmi_charger_iio_write_raw(struct iio_dev *indio_dev,
 			else if (chip->qc3p_active)
 				mmi_qc3p_chrg_enable_all_cp(chip, val1);
 		}
+		break;
 	case PSY_IIO_QC3P_START_POLICY:
 		start_qc3p_policy(chip);
 		break;
@@ -884,6 +885,9 @@ static void cancel_sm(struct mmi_charger_manager *chip)
 	flush_delayed_work(&chip->mmi_chrg_sm_work);
 	mmi_chrg_policy_clear(chip);
 	chip->sm_work_running = false;
+	ret = mmi_charger_write_iio_chan(chip, MMI_CP_ENABLE_STATUS, false);
+	if (ret)
+		mmi_chrg_err(chip, "Unable to write CP disable status: %d\n", ret);
 	chip->pd_volt_max = pd_volt_max_init;
 	chip->pd_curr_max = pd_curr_max_init;
 
@@ -971,6 +975,10 @@ static void kick_qc3p_sm(struct mmi_charger_manager *chip, int ms)
 			if (ret)
 				mmi_chrg_err(chip, "Unable to write slave CP adc enable status: %d\n", ret);
 		}
+
+		ret = mmi_charger_write_iio_chan(chip, MMI_CP_ENABLE_STATUS, true);
+		if (ret)
+			mmi_chrg_err(chip, "Unable to write CP enable status: %d\n", ret);
 	} else
 		mmi_chrg_dbg(chip, PR_INTERRUPT,
 					"mmi chrg qc3p sm work already existed\n");
