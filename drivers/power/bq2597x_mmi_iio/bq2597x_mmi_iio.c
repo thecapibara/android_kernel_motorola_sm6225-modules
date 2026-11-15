@@ -1670,7 +1670,7 @@ static int bq2597x_init_adc(struct bq2597x *bq)
 	bq2597x_set_adc_scan(bq, ADC_TDIE, true);
 	bq2597x_set_adc_scan(bq, ADC_VAC, true);
 
-	bq2597x_enable_adc(bq, true);
+	bq2597x_enable_adc(bq, false);
 	return 0;
 }
 
@@ -1982,6 +1982,12 @@ static int bq2597x_iio_write_raw(struct iio_dev *indio_dev,
 		bq->bat_ocp_fault = false;
 		bq->bus_ovp_fault = false;
 		bq->bus_ocp_fault = false;
+		break;
+	case PSY_IIO_CP_STATUS1:
+		if (val1 == MMI_DISABLE_ADC)
+			bq2597x_enable_adc(bq, false);
+		else if (val1 == MMI_ENABLE_ADC)
+			bq2597x_enable_adc(bq, true);
 		break;
 	default:
 		pr_err("Unsupported bq2597x IIO chan %d\n", chan->channel);
