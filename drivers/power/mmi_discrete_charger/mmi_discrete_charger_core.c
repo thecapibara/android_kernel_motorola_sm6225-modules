@@ -2991,7 +2991,7 @@ static int mmi_discrete_get_chg_info(void *data, struct mmi_charger_info *chg_in
 	val.intval = 0;
 	rc = get_prop_dc_present(chip, &val);
 	if (rc < 0)
-		mmi_err(chip, "Couldn't read dc present rc=%d\n", rc);
+		mmi_dbg(chip, "Couldn't read dc present rc=%d\n", rc);
 	else if (val.intval) {
 		chip->chg_info.chrg_present = 1;
 		val.intval = 0;
