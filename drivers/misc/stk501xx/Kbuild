@@ -1,6 +1,6 @@
 KERNEL_VERSION_NAME = $(shell basename $(KERNEL_DIR_PATH))
 EXTRA_CFLAGS += -Wall
-EXTRA_CFLAGS += -I$(ANDROID_BUILD_TOP)/motorola/kernel/modules/include
+EXTRA_CFLAGS += -I$(KERNEL_SRC)/../sm6225-modules/include
 EXTRA_CFLAGS += -I$(ANDROID_BUILD_TOP)/$(KERNEL_VERSION_NAME)/drivers/base
 
 KBUILD_EXTRA_SYMBOLS += $(CURDIR)/$(KBUILD_EXTMOD)/../../../sensors/$(GKI_OBJ_MODULE_DIR)/Module.symvers
